@@ -172,7 +172,7 @@ const renderedReasoning = computed(() => {
 <template>
   <div class="chat-message" :class="{ 'chat-message--mine': message.role === 'user' }">
     <div class="chat-message__avatar" v-if="message.role === 'assistant'">
-      <img src="@/assets/photo/加载中.png" alt="AI" v-if="message.loading" class="chat-message__loading-icon" />
+      <img :src="message.loading ? thinkingIcon : thinkingIcon" alt="AI" v-if="message.loading" class="chat-message__loading-icon" />
       <img src="@/assets/photo/对话.png" alt="AI" v-else />
     </div>
 
@@ -200,7 +200,7 @@ const renderedReasoning = computed(() => {
 
       <!-- 消息内容 -->
       <div v-if="message.loading && message.role === 'assistant' && !message.content && !message.reasoning_content" class="chat-message__thinking">
-        <img src="@/assets/photo/加载中.png" alt="loading" class="chat-message__loading-icon" />
+        <img :src="thinkingIcon" alt="loading" class="chat-message__loading-icon" />
         <span>思考中...</span>
       </div>
 
