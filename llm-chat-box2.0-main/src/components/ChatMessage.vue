@@ -499,7 +499,7 @@ const renderedReasoning = computed(() => {
     border: 1px solid var(--code-border);
     background-color: var(--code-block-bg);
 
-    .code-block-header {
+    .code-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -527,6 +527,8 @@ const renderedReasoning = computed(() => {
           align-items: center;
           border-radius: 4px;
           transition: background-color 0.2s;
+          width: 24px;
+          height: 24px;
 
           &:hover {
             background-color: rgba(0, 0, 0, 0.05);
@@ -536,6 +538,7 @@ const renderedReasoning = computed(() => {
             width: 14px;
             height: 14px;
             opacity: 0.6;
+            display: block;
           }
         }
       }
@@ -561,7 +564,7 @@ const renderedReasoning = computed(() => {
       background-color: #1e1e1e;
       border-color: #333;
 
-      .code-block-header {
+      .code-header {
         background-color: #252526;
         border-color: #333;
 
@@ -578,6 +581,13 @@ const renderedReasoning = computed(() => {
         color: #d4d4d4;
       }
     }
+  }
+
+  /* 通用图片限制 */
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
   }
 }
 </style>
