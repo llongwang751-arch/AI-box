@@ -260,46 +260,50 @@ const renderedReasoning = computed(() => {
 <style lang="scss" scoped>
 .chat-message {
   display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
-  max-width: 90%;
+  gap: 16px;
+  margin-bottom: 32px;
+  width: 100%;
 
   &--mine {
     flex-direction: row-reverse;
-    align-self: flex-end;
-    margin-left: auto;
 
     .chat-message__content {
       background-color: var(--el-color-primary-light-9);
-      border-radius: 16px 4px 16px 16px;
+      border-radius: 18px 4px 18px 18px;
+      border: 1px solid var(--el-color-primary-light-8);
+    }
+
+    .chat-message__avatar {
+      background: var(--el-color-primary-light-8);
     }
   }
 
   &__avatar {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     flex-shrink: 0;
-    border-radius: 50%;
+    border-radius: 10px; // 稍微方一点的圆角更现代
     overflow: hidden;
     background: #f0f2f5;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid var(--border-color);
 
     img {
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
     }
   }
 
   &__content {
     flex: 1;
     min-width: 0;
-    padding: 12px 16px;
+    padding: 14px 20px;
     background-color: white;
-    border-radius: 4px 16px 16px 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+    border-radius: 4px 18px 18px 18px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--border-color);
   }
 
   &__files {
@@ -360,51 +364,57 @@ const renderedReasoning = computed(() => {
   }
 
   &__reasoning {
-    margin-bottom: 12px;
-    border-left: 3px solid #e1e4e8;
-    background: #f6f8fa;
-    border-radius: 0 8px 8px 0;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--el-color-info-light-8);
+    background: var(--el-color-info-light-9);
+    border-radius: 12px;
+    overflow: hidden;
 
     &-header {
-      padding: 8px 12px;
+      padding: 10px 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
       user-select: none;
+      background: rgba(0, 0, 0, 0.02);
 
       &:hover {
-        background: #edf0f2;
+        background: rgba(0, 0, 0, 0.04);
       }
     }
 
     &-title {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       font-size: 13px;
-      color: var(--text-color-secondary);
+      color: var(--el-color-info);
       font-weight: 500;
 
       img {
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
+        opacity: 0.7;
       }
     }
 
     &-toggle {
       font-size: 12px;
-      transition: transform 0.2s;
+      color: var(--el-color-info);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       &.is-expanded {
         transform: rotate(180deg);
       }
     }
 
     &-body {
-      padding: 8px 12px;
-      font-size: 13px;
-      color: #444;
-      border-top: 1px solid #e1e4e8;
+      padding: 12px 16px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--el-color-info-dark-2);
+      border-top: 1px solid var(--el-color-info-light-8);
+      background: white;
     }
   }
 
@@ -473,14 +483,57 @@ const renderedReasoning = computed(() => {
 /* Markdown Override */
 :deep(.markdown-body) {
   background: transparent;
-  font-size: inherit;
-  color: inherit;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-color-primary);
+
+  p {
+    margin-bottom: 1.25rem;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+
+  ul, ol {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+    li {
+      margin-bottom: 0.5rem;
+      &::marker {
+        color: var(--el-color-primary);
+      }
+    }
+  }
+
+  blockquote {
+    margin: 1.5rem 0;
+    padding: 0.5rem 1rem;
+    border-left: 4px solid var(--el-color-info-light-7);
+    background-color: var(--el-color-info-light-9);
+    color: var(--text-color-secondary);
+    border-radius: 0 4px 4px 0;
+  }
+
+  hr {
+    height: 1px;
+    background-color: var(--border-color);
+    border: none;
+    margin: 2rem 0;
+  }
 
   pre {
     background-color: #f6f8fa;
-    border-radius: 8px;
-    padding: 16px;
-    margin: 8px 0;
+    border-radius: 12px;
+    padding: 1rem;
+    margin: 1.5rem 0;
+    border: 1px solid var(--border-color);
   }
 
   code {
@@ -488,6 +541,7 @@ const renderedReasoning = computed(() => {
     padding: 0.2em 0.4em;
     border-radius: 6px;
     font-size: 85%;
+    font-family: var(--font-family-mono);
   }
 
   /* 代码块容器样式 */

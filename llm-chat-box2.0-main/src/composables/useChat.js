@@ -25,6 +25,14 @@ export function useChat(messagesContainer) {
   watch(currentMessages, scrollToBottom, { deep: true })
 
   const sendMessage = async (messageContent) => {
+    // 增加调试日志
+    console.log('[useChat] sendMessage:', messageContent)
+
+    if (!messageContent || (!messageContent.text?.trim() && !messageContent.files?.length)) {
+      console.warn('[useChat] sendMessage blocked: empty content')
+      return
+    }
+
     if (!settingStore.settings.apiKey) {
       chatStore.addMessage(
         messageHandler.formatMessage('assistant', '请先在设置中配置 API Key 再进行对话。'),

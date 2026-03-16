@@ -1,13 +1,18 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { Close, Document } from '@element-plus/icons-vue'
 
 // 输入框的值，使用 ref 实现响应式
 const inputValue = ref('')
 const fileList = ref([]) // 存储上传的文件列表
 
+// 是否可以发送
+const canSend = computed(() => {
+  return inputValue.value.trim().length > 0 || fileList.value.length > 0
+})
+
 // 定义组件的 props，接收 loading 状态
-const props = defineProps({
+defineProps({
   loading: {
     type: Boolean, // loading 的类型为布尔值
     default: false, // 默认值为 false
@@ -19,18 +24,13 @@ const emit = defineEmits(['send'])
 
 // 处理发送消息的方法
 const handleSend = () => {
-  if (!inputValue.value.trim() || props.loading) return
+  console.log('[ChatInput] handleSend trigger')
 
-  // 构建消息对象
-  const messageContent = {
-    text: inputValue.value.trim(),
-    files: fileList.value,
-  }
+  emit('send', {
+    text: inputValue.value,
+    files: [...fileList.value],
+  })
 
-  // 触发 send 事件，将消息内容作为参数传递
-  emit('send', messageContent)
-
-  // 清空输入框和文件列表
   inputValue.value = ''
   fileList.value = []
 }
@@ -90,16 +90,16 @@ const handleFileRemove = (file) => {
       </div>
     </div>
 
-    <el-input
-      v-model="inputValue"
-      class="chat-input__textarea"
-      type="textarea"
-      :autosize="{ minRows: 1, maxRows: 6 }"
-      placeholder="输入消息，Enter 发送，Shift + Enter 换行"
-      resize="none"
-      @keydown.enter.exact.prevent="handleSend"
-      @keydown.enter.shift="handleNewline"
-    />
+    <div class="chat-input__input-area">
+      <textarea
+        v-model="inputValue"
+        class="chat-input__native-textarea"
+        placeholder="输入消息，Enter 发送，Shift + Enter 换行"
+        rows="1"
+        @keydown.enter.exact.prevent="handleSend"
+        @keydown.enter.shift="handleNewline"
+      ></textarea>
+    </div>
     <div class="chat-input__actions">
       <div class="chat-input__left-actions">
         <el-upload
@@ -109,7 +109,7 @@ const handleFileRemove = (file) => {
           :on-change="handleFileUpload"
           accept=".pdf,.doc,.docx,.txt"
         >
-          <button class="chat-input__action-btn" title="添加附件">
+          <button class="chat-input__action-btn" type="button" title="添加附件">
             <img src="@/assets/photo/附件.png" alt="attachment" />
           </button>
         </el-upload>
@@ -120,7 +120,7 @@ const handleFileRemove = (file) => {
           :on-change="handleFileUpload"
           accept="image/*"
         >
-          <button class="chat-input__action-btn" title="添加图片">
+          <button class="chat-input__action-btn" type="button" title="添加图片">
             <img src="@/assets/photo/图片.png" alt="image" />
           </button>
         </el-upload>
@@ -129,7 +129,8 @@ const handleFileRemove = (file) => {
         <div class="chat-input__divider"></div>
         <button
           class="chat-input__action-btn chat-input__action-btn--send"
-          :disabled="props.loading"
+          :class="{ 'chat-input__action-btn--active': canSend }"
+          type="button"
           @click="handleSend"
           title="发送"
         >
@@ -142,11 +143,17 @@ const handleFileRemove = (file) => {
 
 <style lang="scss" scoped>
 .chat-input {
-  padding: 0.8rem;
-  background-color: var(--bg-color);
+  padding: 1rem;
+  background-color: white;
   border: 1px solid var(--border-color);
-  border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+
+  &:focus-within {
+    border-color: var(--el-color-primary);
+    box-shadow: 0 8px 32px rgba(63, 122, 241, 0.12);
+  }
 
   &__previews {
     margin-bottom: 8px;
@@ -263,12 +270,23 @@ const handleFileRemove = (file) => {
     &--send {
       background-color: #3f7af1;
       border-radius: 8px;
+      opacity: 0.6; // 默认半透明
+      cursor: not-allowed;
+      transition: all 0.2s ease;
+
       img {
         opacity: 1;
-        filter: brightness(100) invert(0); // 确保它是白色的
+        filter: brightness(100) invert(0);
+        pointer-events: none; // 防止图标拦截点击事件
       }
-      &:hover:not(:disabled) {
-        background-color: #3266d6;
+
+      &.chat-input__action-btn--active {
+        opacity: 1; // 激活状态不透明
+        cursor: pointer;
+
+        &:hover {
+          background-color: #3266d6;
+        }
       }
     }
   }
@@ -278,6 +296,25 @@ const handleFileRemove = (file) => {
     width: 1px;
     background-color: var(--border-color);
     margin: 0 4px;
+  }
+
+  &__native-textarea {
+    width: 100%;
+    border: none;
+    outline: none;
+    resize: none;
+    background: transparent;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-color-primary);
+    font-family: inherit;
+    padding: 0;
+    margin: 0;
+    display: block;
+
+    &::placeholder {
+      color: var(--text-color-secondary);
+    }
   }
 
   &__textarea {

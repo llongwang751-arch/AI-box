@@ -31,7 +31,13 @@ onMounted(() => {
 })
 
 // 处理发送和重新生成
-const handleSend = sendMessage
+const handleSend = (messageContent) => {
+  console.log('[ChatView] handleSend event received:', messageContent)
+  if (!messageContent || !messageContent.text) {
+    console.warn('[ChatView] messageContent is empty!')
+  }
+  sendMessage(messageContent)
+}
 const handleRegenerate = regenerateMessage
 
 // 添加组件引用
@@ -86,7 +92,7 @@ const formatTitle = (title = 'LLM Chat') => title.length > 8 ? title.slice(0, 8)
     <!-- 消息容器，显示对话消息 -->
     <div class="messages-container" ref="messagesContainer">
       <template v-if="currentMessages.length > 0">
-        <chat-message
+        <ChatMessage
           v-for="(message, index) in currentMessages"
           :key="message.id"
           :message="message"
@@ -107,7 +113,7 @@ const formatTitle = (title = 'LLM Chat') => title.length > 8 ? title.slice(0, 8)
 
     <!-- 聊天输入框 -->
     <div class="chat-input-container">
-      <chat-input :loading="isLoading" @send="handleSend" />
+      <ChatInput :loading="isLoading" @send="handleSend" />
     </div>
 
     <!-- 设置面板 -->
