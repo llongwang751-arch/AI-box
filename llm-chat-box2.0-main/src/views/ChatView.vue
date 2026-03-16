@@ -285,29 +285,32 @@ const formatTitle = (title = 'LLM Chat') => title.length > 8 ? title.slice(0, 8)
 
 /* 定义消息容器的样式 */
 .messages-container {
-  flex: 1; /* 占据剩余空间 */
-  overflow-y: auto; /* 垂直方向可滚动 */
-  padding: 0.6rem; /* 四周内边距 */
-  background-color: var(--bg-color-secondary); /* 使用主题变量设置背景色 */
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  scroll-behavior: smooth;
+  background-color: var(--bg-color-secondary);
 
-  /* 设置最大宽度和居中对齐，与输入框保持一致 */
-  max-width: 796px; /* 设置最大宽度 */
-  min-width: 0; /* 设置最小宽度 */
-  margin: 0 auto; /* 水平居中 */
-  width: 100%; /* 在最大宽度范围内占满宽度 */
+  & > * {
+    width: 100%;
+    max-width: 800px;
+  }
 
   /* 自定义滚动条样式 */
   &::-webkit-scrollbar {
-    width: 6px; /* 滚动条宽度 */
+    width: 6px;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #ddd; /* 滚动条滑块颜色 */
-    border-radius: 3px; /* 滚动条滑块圆角 */
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: transparent; /* 滚动条轨道透明 */
+    background-color: transparent;
   }
 }
 
@@ -346,18 +349,19 @@ const formatTitle = (title = 'LLM Chat') => title.length > 8 ? title.slice(0, 8)
 
 /* 添加输入框容器样式 */
 .chat-input-container {
-  position: sticky; /* 使用粘性定位，当滚动到底部时固定位置 */
-  bottom: 0; /* 固定在底部 */
-  left: 0; /* 左边缘对齐 */
-  right: 0; /* 右边缘对齐 */
-  background-color: var(--bg-color); /* 使用主题变量设置背景色 */
-  z-index: 10; /* 设置层级，确保输入框始终显示在其他内容之上 */
-  padding: 0.6rem; /* 添加内边距，让输入框与边缘保持距离 */
-  // padding-top: 0; /* 移除顶部内边距，只保留底部和左右的间距 */
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  padding: 1rem 2rem 2rem;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(to top, var(--bg-color) 80%, transparent);
 
-  /* 添加最大宽度和居中对齐 */
-  max-width: 796px; /* 设置最大宽度 */
-  margin: 0 auto; /* 水平居中 */
-  width: 100%; /* 在最大宽度范围内占满宽度 */
+  & > * {
+    width: 100%;
+    max-width: 800px;
+  }
 }
 </style>
